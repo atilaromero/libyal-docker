@@ -1,0 +1,7 @@
+#!/bin/bash
+
+LIB_VER=`docker run --rm ${IMAGE_NAME} git describe --tags`
+LIB_VER=${LIB_VER:-latest}
+
+docker tag ${IMAGE_NAME} ${IMAGE_NAME}-${LIB_VER}
+docker push ${IMAGE_NAME}-${LIB_VER}
