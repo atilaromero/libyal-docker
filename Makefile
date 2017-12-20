@@ -41,10 +41,10 @@ all: $(SUBDIRS:%=%/Dockerfile)
 $(SUBDIRS:%=%/):
 	mkdir $@
 
-$(SUBDIRS:%=%/hooks/push):
+$(SUBDIRS:%=%/hooks/post_push):
 	mkdir -p $(dir $@)
-	cp push $(dir $@)
+	cp post_push $(dir $@)
 
 %/Dockerfile: export LIB_NAME=$(@D)
-%/Dockerfile: Dockerfile.template.sh %/ %/hooks/push
+%/Dockerfile: Dockerfile.template.sh %/ %/hooks/post_push
 	./Dockerfile.template.sh |envsubst '$${LIB_NAME} $${BASEIMAGE} $${SRC_BASE} $${CONFIGURE_OPTIONS} $${LIB_VER}' > $@
