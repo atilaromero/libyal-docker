@@ -7,7 +7,7 @@ FROM libyal/libcpath as libcpath
 FROM libyal/libcsplit as libcsplit
 FROM libyal/libcthreads as libcthreads
 FROM libyal/libuna as libuna
-FROM libyal/builder:debian-sid-1.1.0
+FROM libyal/builder:builder-debian-sid-1.2.0
 ENV LIB_VER latest
 
 RUN git clone https://github.com/libyal/libbfio.git

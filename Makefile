@@ -1,6 +1,6 @@
 .PHONY: all
 
-BASEIMAGE ?= debian-sid-1.1.0
+BASEIMAGE ?= builder-debian-sid-1.2.0
 export BASEIMAGE
 SRC_BASE ?= /usr/local/src
 export SRC_BASE

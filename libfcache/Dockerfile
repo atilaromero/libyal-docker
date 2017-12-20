@@ -1,7 +1,7 @@
 FROM libyal/libcdata as libcdata
 FROM libyal/libcerror as libcerror
 FROM libyal/libcthreads as libcthreads
-FROM libyal/builder:debian-sid-1.1.0
+FROM libyal/builder:builder-debian-sid-1.2.0
 ENV LIB_VER latest
 
 RUN git clone https://github.com/libyal/libfcache.git

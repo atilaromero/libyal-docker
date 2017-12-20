@@ -2,7 +2,7 @@ FROM libyal/libcerror as libcerror
 FROM libyal/libclocale as libclocale
 FROM libyal/libcnotify as libcnotify
 FROM libyal/libuna as libuna
-FROM libyal/builder:debian-sid-1.1.0
+FROM libyal/builder:builder-debian-sid-1.2.0
 ENV LIB_VER latest
 
 RUN git clone https://github.com/libyal/libcfile.git
