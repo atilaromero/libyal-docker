@@ -1,4 +1,14 @@
-#!/bin/bash
+#!/bin/bash -x
+
+ARR=(${IMAGE_NAME/:/ })
+echo DOCKER_REPO=$DOCKER_REPO
+echo CACHE_TAG=$CACHE_TAG
+set
+
+DOCKER_REPO=${ARR[0]}
+CACHE_TAG=${ARR[1]}
+echo DOCKER_REPO=$DOCKER_REPO
+echo CACHE_TAG=$CACHE_TAG
 
 CACHE_TAG=${CACHE_TAG#${DOCKER_REPO##*/}-}
 
