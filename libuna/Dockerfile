@@ -11,8 +11,8 @@ WORKDIR /usr/local/src/libuna
 RUN /usr/local/src/checkout.sh latest
 COPY --from=libcdatetime /usr/local/src/libcdatetime/libcdatetime/ /usr/local/src/libuna/libcdatetime/
 COPY --from=libcerror /usr/local/src/libcerror/libcerror/ /usr/local/src/libuna/libcerror/
-RUN ln -s ../libcfile/libcfile/
 COPY --from=libclocale /usr/local/src/libclocale/libclocale/ /usr/local/src/libuna/libclocale/
 COPY --from=libcnotify /usr/local/src/libcnotify/libcnotify/ /usr/local/src/libuna/libcnotify/
+RUN ln -s ../libcfile/libcfile/
 ENV CONFIGURE_OPTIONS --prefix=/usr
 RUN /usr/local/src/build.sh

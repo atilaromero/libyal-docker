@@ -34,7 +34,8 @@ libhmac/Dockerfile: export LOCAL_LIBS=libcerror libcfile libclocale libcnotify l
 libodraw/Dockerfile: export LOCAL_LIBS=libbfio libcdata libcerror libcfile libclocale libcnotify libcpath libcsplit libcthreads libhmac libuna
 libsmdev/Dockerfile: export LOCAL_LIBS=libcdata libcerror libcfile libclocale libcnotify libcthreads libuna
 libsmraw/Dockerfile: export LOCAL_LIBS=libbfio libcdata libcerror libcfile libclocale libcnotify libcpath libcsplit libcthreads libfcache libfdata libfvalue libhmac libuna
-libuna/Dockerfile: export LOCAL_LIBS=libcdatetime libcerror libcfile libclocale libcnotify
+libuna/Dockerfile: export LOCAL_LIBS=libcdatetime libcerror libclocale libcnotify
+libuna/Dockerfile: export LN_LIBS=libcfile
 
 all: $(SUBDIRS:%=%/Dockerfile)
 
