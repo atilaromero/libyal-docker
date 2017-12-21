@@ -10,7 +10,7 @@ ENV LIB_VER latest
 
 RUN git clone https://github.com/libyal/libsmdev.git
 WORKDIR /usr/local/src/libsmdev
-RUN /usr/local/src/checkout.sh latest
+RUN /usr/local/src/checkout.sh ${LIB_VER}
 COPY --from=libcdata /usr/local/src/libcdata/libcdata/ /usr/local/src/libsmdev/libcdata/
 COPY --from=libcerror /usr/local/src/libcerror/libcerror/ /usr/local/src/libsmdev/libcerror/
 COPY --from=libcfile /usr/local/src/libcfile/libcfile/ /usr/local/src/libsmdev/libcfile/
@@ -19,4 +19,10 @@ COPY --from=libcnotify /usr/local/src/libcnotify/libcnotify/ /usr/local/src/libs
 COPY --from=libcthreads /usr/local/src/libcthreads/libcthreads/ /usr/local/src/libsmdev/libcthreads/
 COPY --from=libuna /usr/local/src/libuna/libuna/ /usr/local/src/libsmdev/libuna/
 ENV CONFIGURE_OPTIONS --prefix=/usr
-RUN /usr/local/src/build.sh
+RUN ./autogen.sh
+RUN ./configure ${CONFIGURE_OPTIONS}
+RUN make install
+RUN ldconfig
+RUN make dist-gzip
+RUN cp -rf dpkg debian
+RUN dpkg-buildpackage -b -us -uc -rfakeroot

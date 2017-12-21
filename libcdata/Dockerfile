@@ -1,12 +1,18 @@
 FROM libyal/libcerror as libcerror
 FROM libyal/libcthreads as libcthreads
 FROM libyal/builder:builder-debian-sid-1.2.0
-ENV LIB_VER latest
+ENV LIB_VER master
 
 RUN git clone https://github.com/libyal/libcdata.git
 WORKDIR /usr/local/src/libcdata
-RUN /usr/local/src/checkout.sh latest
+RUN /usr/local/src/checkout.sh ${LIB_VER}
 COPY --from=libcerror /usr/local/src/libcerror/libcerror/ /usr/local/src/libcdata/libcerror/
 COPY --from=libcthreads /usr/local/src/libcthreads/libcthreads/ /usr/local/src/libcdata/libcthreads/
 ENV CONFIGURE_OPTIONS --prefix=/usr
-RUN /usr/local/src/build.sh
+RUN ./autogen.sh
+RUN ./configure ${CONFIGURE_OPTIONS}
+RUN make install
+RUN ldconfig
+RUN make dist-gzip
+RUN cp -rf dpkg debian
+RUN dpkg-buildpackage -b -us -uc -rfakeroot

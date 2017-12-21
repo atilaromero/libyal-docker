@@ -11,8 +11,5 @@ RUN apt-get update \
 && rm -rf /var/lib/apt/lists/*
 
 ENV SRC_BASE /usr/local/src/
-COPY build.sh ${SRC_BASE}
 COPY checkout.sh ${SRC_BASE}
 WORKDIR ${SRC_BASE}
-
-ENV CONFIGURE_OPTIONS --prefix=/usr

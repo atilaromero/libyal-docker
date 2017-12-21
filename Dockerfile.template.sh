@@ -20,7 +20,7 @@ done
 
 cat <<'EOF'
 WORKDIR ${SRC_BASE}/${LIB_NAME}
-RUN ${SRC_BASE}/checkout.sh ${LIB_VER}
+RUN ${SRC_BASE}/checkout.sh ${DOLLAR}{LIB_VER}
 EOF
 
 for LIB in ${LOCAL_LIBS}
@@ -37,5 +37,11 @@ done
 
 cat <<'EOF'
 ENV CONFIGURE_OPTIONS ${CONFIGURE_OPTIONS}
-RUN ${SRC_BASE}/build.sh
+RUN ./autogen.sh
+RUN ./configure ${DOLLAR}{CONFIGURE_OPTIONS}
+RUN make install
+RUN ldconfig
+RUN make dist-gzip
+RUN cp -rf dpkg debian
+RUN dpkg-buildpackage -b -us -uc -rfakeroot
 EOF

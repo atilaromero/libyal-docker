@@ -17,7 +17,7 @@ ENV LIB_VER latest
 
 RUN git clone https://github.com/libyal/libsmraw.git
 WORKDIR /usr/local/src/libsmraw
-RUN /usr/local/src/checkout.sh latest
+RUN /usr/local/src/checkout.sh ${LIB_VER}
 COPY --from=libbfio /usr/local/src/libbfio/libbfio/ /usr/local/src/libsmraw/libbfio/
 COPY --from=libcdata /usr/local/src/libcdata/libcdata/ /usr/local/src/libsmraw/libcdata/
 COPY --from=libcerror /usr/local/src/libcerror/libcerror/ /usr/local/src/libsmraw/libcerror/
@@ -33,4 +33,10 @@ COPY --from=libfvalue /usr/local/src/libfvalue/libfvalue/ /usr/local/src/libsmra
 COPY --from=libhmac /usr/local/src/libhmac/libhmac/ /usr/local/src/libsmraw/libhmac/
 COPY --from=libuna /usr/local/src/libuna/libuna/ /usr/local/src/libsmraw/libuna/
 ENV CONFIGURE_OPTIONS --prefix=/usr
-RUN /usr/local/src/build.sh
+RUN ./autogen.sh
+RUN ./configure ${CONFIGURE_OPTIONS}
+RUN make install
+RUN ldconfig
+RUN make dist-gzip
+RUN cp -rf dpkg debian
+RUN dpkg-buildpackage -b -us -uc -rfakeroot

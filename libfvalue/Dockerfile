@@ -11,7 +11,7 @@ ENV LIB_VER latest
 
 RUN git clone https://github.com/libyal/libfvalue.git
 WORKDIR /usr/local/src/libfvalue
-RUN /usr/local/src/checkout.sh latest
+RUN /usr/local/src/checkout.sh ${LIB_VER}
 COPY --from=libcdata /usr/local/src/libcdata/libcdata/ /usr/local/src/libfvalue/libcdata/
 COPY --from=libcerror /usr/local/src/libcerror/libcerror/ /usr/local/src/libfvalue/libcerror/
 COPY --from=libcnotify /usr/local/src/libcnotify/libcnotify/ /usr/local/src/libfvalue/libcnotify/
@@ -21,4 +21,10 @@ COPY --from=libfguid /usr/local/src/libfguid/libfguid/ /usr/local/src/libfvalue/
 COPY --from=libfwnt /usr/local/src/libfwnt/libfwnt/ /usr/local/src/libfvalue/libfwnt/
 COPY --from=libuna /usr/local/src/libuna/libuna/ /usr/local/src/libfvalue/libuna/
 ENV CONFIGURE_OPTIONS --prefix=/usr
-RUN /usr/local/src/build.sh
+RUN ./autogen.sh
+RUN ./configure ${CONFIGURE_OPTIONS}
+RUN make install
+RUN ldconfig
+RUN make dist-gzip
+RUN cp -rf dpkg debian
+RUN dpkg-buildpackage -b -us -uc -rfakeroot

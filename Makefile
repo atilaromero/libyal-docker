@@ -8,6 +8,8 @@ CONFIGURE_OPTIONS ?= --prefix=/usr
 export CONFIGURE_OPTIONS
 LIB_VER ?= latest
 export LIB_VER
+DOLLAR := $$
+export DOLLAR
 
 SUBDIRS := libcerror libclocale libbfio libcaes libcdata libcdatetime
 SUBDIRS += libcfile libcnotify libcpath libcsplit libcthreads libfcache
@@ -38,6 +40,8 @@ libsmdev/Dockerfile: export LOCAL_LIBS=libcdata libcerror libcfile libclocale li
 libsmraw/Dockerfile: export LOCAL_LIBS=libbfio libcdata libcerror libcfile libclocale libcnotify libcpath libcsplit libcthreads libfcache libfdata libfvalue libhmac libuna
 libewf/Dockerfile: export LOCAL_LIBS=libbfio libcaes libcdata libcdatetime libcerror libcfile libclocale libcnotify libcpath libcsplit libcthreads libfcache libfdata libfguid libfvalue libhmac libodraw libsmdev libsmraw libuna
 
+libcdata/Dockerfile: export LIB_VER=master
+
 all: $(SUBDIRS:%=%/Dockerfile)
 
 $(SUBDIRS:%=%/):
@@ -53,4 +57,4 @@ $(SUBDIRS:%=%/hooks/push): push
 
 %/Dockerfile: export LIB_NAME=$(@D)
 %/Dockerfile: Dockerfile.template.sh %/ %/hooks/post_push %/hooks/push Makefile
-	./Dockerfile.template.sh |envsubst '$${LIB_NAME} $${BASEIMAGE} $${SRC_BASE} $${CONFIGURE_OPTIONS} $${LIB_VER}' > $@
+	./Dockerfile.template.sh |envsubst '$${LIB_NAME} $${BASEIMAGE} $${SRC_BASE} $${CONFIGURE_OPTIONS} $${LIB_VER} $${DOLLAR}' > $@

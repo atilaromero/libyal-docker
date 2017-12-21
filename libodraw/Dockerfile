@@ -14,7 +14,7 @@ ENV LIB_VER latest
 
 RUN git clone https://github.com/libyal/libodraw.git
 WORKDIR /usr/local/src/libodraw
-RUN /usr/local/src/checkout.sh latest
+RUN /usr/local/src/checkout.sh ${LIB_VER}
 COPY --from=libbfio /usr/local/src/libbfio/libbfio/ /usr/local/src/libodraw/libbfio/
 COPY --from=libcdata /usr/local/src/libcdata/libcdata/ /usr/local/src/libodraw/libcdata/
 COPY --from=libcerror /usr/local/src/libcerror/libcerror/ /usr/local/src/libodraw/libcerror/
@@ -27,4 +27,10 @@ COPY --from=libcthreads /usr/local/src/libcthreads/libcthreads/ /usr/local/src/l
 COPY --from=libhmac /usr/local/src/libhmac/libhmac/ /usr/local/src/libodraw/libhmac/
 COPY --from=libuna /usr/local/src/libuna/libuna/ /usr/local/src/libodraw/libuna/
 ENV CONFIGURE_OPTIONS --prefix=/usr
-RUN /usr/local/src/build.sh
+RUN ./autogen.sh
+RUN ./configure ${CONFIGURE_OPTIONS}
+RUN make install
+RUN ldconfig
+RUN make dist-gzip
+RUN cp -rf dpkg debian
+RUN dpkg-buildpackage -b -us -uc -rfakeroot

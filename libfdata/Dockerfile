@@ -8,11 +8,17 @@ ENV LIB_VER latest
 
 RUN git clone https://github.com/libyal/libfdata.git
 WORKDIR /usr/local/src/libfdata
-RUN /usr/local/src/checkout.sh latest
+RUN /usr/local/src/checkout.sh ${LIB_VER}
 COPY --from=libcdata /usr/local/src/libcdata/libcdata/ /usr/local/src/libfdata/libcdata/
 COPY --from=libcerror /usr/local/src/libcerror/libcerror/ /usr/local/src/libfdata/libcerror/
 COPY --from=libcnotify /usr/local/src/libcnotify/libcnotify/ /usr/local/src/libfdata/libcnotify/
 COPY --from=libcthreads /usr/local/src/libcthreads/libcthreads/ /usr/local/src/libfdata/libcthreads/
 COPY --from=libfcache /usr/local/src/libfcache/libfcache/ /usr/local/src/libfdata/libfcache/
 ENV CONFIGURE_OPTIONS --prefix=/usr
-RUN /usr/local/src/build.sh
+RUN ./autogen.sh
+RUN ./configure ${CONFIGURE_OPTIONS}
+RUN make install
+RUN ldconfig
+RUN make dist-gzip
+RUN cp -rf dpkg debian
+RUN dpkg-buildpackage -b -us -uc -rfakeroot

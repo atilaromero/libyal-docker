@@ -12,7 +12,7 @@ ENV LIB_VER latest
 
 RUN git clone https://github.com/libyal/libbfio.git
 WORKDIR /usr/local/src/libbfio
-RUN /usr/local/src/checkout.sh latest
+RUN /usr/local/src/checkout.sh ${LIB_VER}
 COPY --from=libcdata /usr/local/src/libcdata/libcdata/ /usr/local/src/libbfio/libcdata/
 COPY --from=libcerror /usr/local/src/libcerror/libcerror/ /usr/local/src/libbfio/libcerror/
 COPY --from=libcfile /usr/local/src/libcfile/libcfile/ /usr/local/src/libbfio/libcfile/
@@ -23,4 +23,10 @@ COPY --from=libcsplit /usr/local/src/libcsplit/libcsplit/ /usr/local/src/libbfio
 COPY --from=libcthreads /usr/local/src/libcthreads/libcthreads/ /usr/local/src/libbfio/libcthreads/
 COPY --from=libuna /usr/local/src/libuna/libuna/ /usr/local/src/libbfio/libuna/
 ENV CONFIGURE_OPTIONS --prefix=/usr
-RUN /usr/local/src/build.sh
+RUN ./autogen.sh
+RUN ./configure ${CONFIGURE_OPTIONS}
+RUN make install
+RUN ldconfig
+RUN make dist-gzip
+RUN cp -rf dpkg debian
+RUN dpkg-buildpackage -b -us -uc -rfakeroot
