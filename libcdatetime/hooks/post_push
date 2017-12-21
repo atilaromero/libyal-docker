@@ -4,9 +4,25 @@ ARRAY=(${IMAGE_NAME/:/ })
 PREFIX=${ARRAY[0]}
 SUFFIX=${ARRAY[1]}
 
-SUFFIX=`echo ${SUFFIX} | grep -o '.*-'`
+if [[ $SUFFIX =~ '-' ]]
+then
+  TAG=${SUFFIX%-*}
+  SEP='-'
+  VER=${SUFFIX##*-}
+else
+  TAG=''
+  SEP=''
+  VER=${SUFFIX}
+fi
 
-NEW_NAME=${PREFIX}:${SUFFIX}latest
+if [ "$VER" == latest ]
+then
+  VER=`docker run --rm ${IMAGE_NAME} git describe --tags`
+else
+  VER=latest
+fi
+
+NEW_NAME=${PREFIX}:${TAG}${SEP}${VER}
 
 if [ "${IMAGE_NAME}" != "${NEW_NAME}" ]
 then
