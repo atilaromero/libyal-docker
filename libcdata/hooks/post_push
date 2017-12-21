@@ -1,16 +1,16 @@
 #!/bin/bash
 
-CACHE_TAG=${CACHE_TAG#${DOCKER_REPO##*/}-}
+DOCKER_TAG=${DOCKER_TAG#${DOCKER_REPO##*/}-}
 
-if [[ $CACHE_TAG =~ '-' ]]
+if [[ $DOCKER_TAG =~ '-' ]]
 then
-  TAG=${CACHE_TAG%-*}
+  TAG=${DOCKER_TAG%-*}
   SEP='-'
-  VER=${CACHE_TAG##*-}
+  VER=${DOCKER_TAG##*-}
 else
   TAG=''
   SEP=''
-  VER=${CACHE_TAG}
+  VER=${DOCKER_TAG}
 fi
 
 if [ "$VER" == latest ]
@@ -20,7 +20,7 @@ fi
 
 NEW_NAME=${DOCKER_REPO}:${TAG}${SEP}${VER}
 
-if [ "${DOCKER_REPO}:${CACHE_TAG}" != "${NEW_NAME}" ]
+if [ "${DOCKER_REPO}:${DOCKER_TAG}" != "${NEW_NAME}" ]
 then
   docker tag ${IMAGE_NAME} ${NEW_NAME}
   docker push ${NEW_NAME}
