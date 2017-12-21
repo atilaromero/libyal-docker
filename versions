@@ -1,4 +1,4 @@
-export libcerror=20170824
+export libcerror=20170723
 export libclocale=20170105
 export libbfio=20170123
 export libcaes=20170110
