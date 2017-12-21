@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CACHE_TAG=${CACHE_TAG#${DOCKER_REPO##/}-}
+CACHE_TAG=${CACHE_TAG#${DOCKER_REPO##*/}-}
 
 if [[ $CACHE_TAG =~ '-' ]]
 then
