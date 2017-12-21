@@ -1,7 +1,10 @@
 #!/bin/bash
 
 LIB_VER=`docker run --rm ${IMAGE_NAME} git describe --tags`
-LIB_VER=${LIB_VER:-latest}
+NEW_NAME=${IMAGE_NAME%latest}${LIB_VER:-latest}
 
-docker tag ${IMAGE_NAME} ${IMAGE_NAME}-${LIB_VER}
-docker push ${IMAGE_NAME}-${LIB_VER}
+if [ "${IMAGE_NAME}" != "${NEW_NAME}" ]
+then
+  docker tag ${IMAGE_NAME} ${NEW_NAME}
+  docker push ${NEW_NAME}
+fi
