@@ -1,18 +1,16 @@
 #!/bin/bash
 
-ARRAY=(${IMAGE_NAME/:/ })
-PREFIX=${ARRAY[0]}
-SUFFIX=${ARRAY[1]}
+CACHE_TAG=${CACHE_TAG#lib*-}
 
-if [[ $SUFFIX =~ '-' ]]
+if [[ $CACHE_TAG =~ '-' ]]
 then
-  TAG=${SUFFIX%-*}
+  TAG=${CACHE_TAG%-*}
   SEP='-'
-  VER=${SUFFIX##*-}
+  VER=${CACHE_TAG##*-}
 else
   TAG=''
   SEP=''
-  VER=${SUFFIX}
+  VER=${CACHE_TAG}
 fi
 
 if [ "$VER" == latest ]
@@ -22,7 +20,7 @@ else
   VER=latest
 fi
 
-NEW_NAME=${PREFIX}:${TAG}${SEP}${VER}
+NEW_NAME=${DOCKER_REPO}:${TAG}${SEP}${VER}
 
 if [ "${IMAGE_NAME}" != "${NEW_NAME}" ]
 then
