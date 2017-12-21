@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 DOCKER_TAG=${DOCKER_TAG#${DOCKER_REPO##*/}-}
 
