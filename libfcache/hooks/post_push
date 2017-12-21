@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CACHE_TAG=${CACHE_TAG#lib*-}
+CACHE_TAG=${CACHE_TAG#${DOCKER_REPO##/}-}
 
 if [[ $CACHE_TAG =~ '-' ]]
 then
@@ -16,13 +16,11 @@ fi
 if [ "$VER" == latest ]
 then
   VER=`docker run --rm ${IMAGE_NAME} git describe --tags`
-else
-  VER=latest
 fi
 
 NEW_NAME=${DOCKER_REPO}:${TAG}${SEP}${VER}
 
-if [ "${IMAGE_NAME}" != "${NEW_NAME}" ]
+if [ "${DOCKER_REPO}:${CACHE_TAG}" != "${NEW_NAME}" ]
 then
   docker tag ${IMAGE_NAME} ${NEW_NAME}
   docker push ${NEW_NAME}
