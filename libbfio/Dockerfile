@@ -1,18 +1,18 @@
-FROM libyal/libcdata as libcdata
-FROM libyal/libcerror as libcerror
-FROM libyal/libcfile as libcfile
-FROM libyal/libclocale as libclocale
-FROM libyal/libcnotify as libcnotify
-FROM libyal/libcpath as libcpath
-FROM libyal/libcsplit as libcsplit
-FROM libyal/libcthreads as libcthreads
-FROM libyal/libuna as libuna
+FROM libyal/libcdata:20170102 as libcdata
+FROM libyal/libcerror:20170824 as libcerror
+FROM libyal/libcfile:20170105 as libcfile
+FROM libyal/libclocale:20170105 as libclocale
+FROM libyal/libcnotify:20170311 as libcnotify
+FROM libyal/libcpath:20171210 as libcpath
+FROM libyal/libcsplit:20170311 as libcsplit
+FROM libyal/libcthreads:20170101 as libcthreads
+FROM libyal/libuna:20170825 as libuna
 FROM libyal/builder:builder-debian-sid-1.2.0
-ENV LIB_VER latest
 
+WORKDIR /usr/local/src
 RUN git clone https://github.com/libyal/libbfio.git
 WORKDIR /usr/local/src/libbfio
-RUN /usr/local/src/checkout.sh ${LIB_VER}
+RUN git checkout 20170123
 COPY --from=libcdata /usr/local/src/libcdata/libcdata/ /usr/local/src/libbfio/libcdata/
 COPY --from=libcerror /usr/local/src/libcerror/libcerror/ /usr/local/src/libbfio/libcerror/
 COPY --from=libcfile /usr/local/src/libcfile/libcfile/ /usr/local/src/libbfio/libcfile/

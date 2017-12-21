@@ -1,13 +1,13 @@
-FROM libyal/libcerror as libcerror
-FROM libyal/libclocale as libclocale
-FROM libyal/libcnotify as libcnotify
-FROM libyal/libuna as libuna
+FROM libyal/libcerror:20170824 as libcerror
+FROM libyal/libclocale:20170105 as libclocale
+FROM libyal/libcnotify:20170311 as libcnotify
+FROM libyal/libuna:20170825 as libuna
 FROM libyal/builder:builder-debian-sid-1.2.0
-ENV LIB_VER latest
 
+WORKDIR /usr/local/src
 RUN git clone https://github.com/libyal/libcfile.git
 WORKDIR /usr/local/src/libcfile
-RUN /usr/local/src/checkout.sh ${LIB_VER}
+RUN git checkout 20170105
 COPY --from=libcerror /usr/local/src/libcerror/libcerror/ /usr/local/src/libcfile/libcerror/
 COPY --from=libclocale /usr/local/src/libclocale/libclocale/ /usr/local/src/libcfile/libclocale/
 COPY --from=libcnotify /usr/local/src/libcnotify/libcnotify/ /usr/local/src/libcfile/libcnotify/

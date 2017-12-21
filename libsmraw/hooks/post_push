@@ -1,5 +1,6 @@
 #!/bin/bash -x
 
+#remove repo name from beginning of tag
 DOCKER_TAG=${DOCKER_TAG#${DOCKER_REPO##*/}-}
 
 if [[ $DOCKER_TAG =~ '-' ]]
@@ -13,10 +14,7 @@ else
   VER=${DOCKER_TAG}
 fi
 
-if [ "$VER" == latest ]
-then
-  VER=`docker run --rm ${IMAGE_NAME} git describe --tags`
-fi
+VER=latest
 
 NEW_NAME=${DOCKER_REPO}:${TAG}${SEP}${VER}
 

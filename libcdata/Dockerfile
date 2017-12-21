@@ -1,11 +1,11 @@
-FROM libyal/libcerror as libcerror
-FROM libyal/libcthreads as libcthreads
+FROM libyal/libcerror:20170824 as libcerror
+FROM libyal/libcthreads:20170101 as libcthreads
 FROM libyal/builder:builder-debian-sid-1.2.0
-ENV LIB_VER latest
 
+WORKDIR /usr/local/src
 RUN git clone https://github.com/libyal/libcdata.git
 WORKDIR /usr/local/src/libcdata
-RUN /usr/local/src/checkout.sh ${LIB_VER}
+RUN git checkout 20170102
 COPY --from=libcerror /usr/local/src/libcerror/libcerror/ /usr/local/src/libcdata/libcerror/
 COPY --from=libcthreads /usr/local/src/libcthreads/libcthreads/ /usr/local/src/libcdata/libcthreads/
 ENV CONFIGURE_OPTIONS --prefix=/usr

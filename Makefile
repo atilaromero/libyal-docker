@@ -1,19 +1,26 @@
-.PHONY: all
-BASEREPO ?= libyal
-export BASEREPO
-BASEIMAGE ?= builder-debian-sid-1.2.0
-export BASEIMAGE
-SRC_BASE ?= /usr/local/src
-export SRC_BASE
-CONFIGURE_OPTIONS ?= --prefix=/usr
-export CONFIGURE_OPTIONS
-DOLLAR := $$
-export DOLLAR
+export BASEREPO ?= libyal
+export BASETAG ?= builder-debian-sid-1.2.0
+export SRC_BASE ?= /usr/local/src
+export CONFIGURE_OPTIONS ?= --prefix=/usr
+export DOLLAR := $$
 
 SUBDIRS := libcerror libclocale libbfio libcaes libcdata libcdatetime
 SUBDIRS += libcfile libcnotify libcpath libcsplit libcthreads libfcache
 SUBDIRS += libfdata libfguid libfvalue libhmac libodraw libsmdev libsmraw
 SUBDIRS += libuna libfwnt
+
+all: $(SUBDIRS:%=%/Dockerfile)
+
+$(SUBDIRS:%=%/):
+	mkdir $@
+
+$(SUBDIRS:%=%/hooks/post_push): post_push
+	mkdir -p $(dir $@)
+	cp post_push $(dir $@)
+
+$(SUBDIRS:%=%/hooks/push): push
+	mkdir -p $(dir $@)
+	cp push $(dir $@)
 
 libcerror/Dockerfile:    export LOCAL_LIBS=
 libcaes/Dockerfile:      export LOCAL_LIBS=libcerror
@@ -39,42 +46,26 @@ libsmdev/Dockerfile:     export LOCAL_LIBS=libcdata libcerror libcfile libclocal
 libsmraw/Dockerfile:     export LOCAL_LIBS=libbfio libcdata libcerror libcfile libclocale libcnotify libcpath libcsplit libcthreads libfcache libfdata libfvalue libhmac libuna
 libewf/Dockerfile:       export LOCAL_LIBS=libbfio libcaes libcdata libcdatetime libcerror libcfile libclocale libcnotify libcpath libcsplit libcthreads libfcache libfdata libfguid libfvalue libhmac libodraw libsmdev libsmraw libuna
 
-libcerror/Dockerfile:    export LIB_VER=latest
-libcaes/Dockerfile:      export LIB_VER=latest
-libcdatetime/Dockerfile: export LIB_VER=master
-libclocale/Dockerfile:   export LIB_VER=latest
-libcnotify/Dockerfile:   export LIB_VER=latest
-libcsplit/Dockerfile:    export LIB_VER=latest
-libcthreads/Dockerfile:  export LIB_VER=latest
-libfguid/Dockerfile:     export LIB_VER=latest
-libcdata/Dockerfile:     export LIB_VER=latest
-libuna/Dockerfile:       export LIB_VER=latest
-libcfile/Dockerfile:     export LIB_VER=latest
-libcpath/Dockerfile:     export LIB_VER=latest
-libbfio/Dockerfile:      export LIB_VER=latest
-libfcache/Dockerfile:    export LIB_VER=latest
-libfdata/Dockerfile:     export LIB_VER=latest
-libfwnt/Dockerfile:      export LIB_VER=latest
-libfvalue/Dockerfile:    export LIB_VER=latest
-libhmac/Dockerfile:      export LIB_VER=latest
-libodraw/Dockerfile:     export LIB_VER=latest
-libsmdev/Dockerfile:     export LIB_VER=latest
-libsmraw/Dockerfile:     export LIB_VER=latest
-libewf/Dockerfile:       export LIB_VER=latest
+update_versions:
+	(for x in ${SUBDIRS}; \
+	do \
+		echo -n "export $${x}="; \
+		git ls-remote --tags https://github.com/libyal/$${x}.git |\
+		sort -g -k3 -t/ | tail -n 1 | awk -F/ '{print $$3}'; \
+	done ) > versions
 
-all: $(SUBDIRS:%=%/Dockerfile)
+include versions
+export libcdatetime := 2485bb579b #20171209
 
-$(SUBDIRS:%=%/):
-	mkdir $@
+autotag:
+	for x in ${SUBDIRS}; \
+	do \
+		git tag -f $${x}-$${!x}; \
+	done
 
-$(SUBDIRS:%=%/hooks/post_push): post_push
-	mkdir -p $(dir $@)
-	cp post_push $(dir $@)
-
-$(SUBDIRS:%=%/hooks/push): push
-	mkdir -p $(dir $@)
-	cp push $(dir $@)
 
 %/Dockerfile: export LIB_NAME=$(@D)
 %/Dockerfile: Dockerfile.template.sh %/ %/hooks/post_push %/hooks/push Makefile
-	./Dockerfile.template.sh |envsubst '$${LIB_NAME} $${BASEREPO} $${BASEIMAGE} $${SRC_BASE} $${CONFIGURE_OPTIONS} $${LIB_VER} $${DOLLAR}' > $@
+	./Dockerfile.template.sh |envsubst '$${BASEREPO} $${BASETAG} $${LIB_NAME} $${SRC_BASE} $${CONFIGURE_OPTIONS} $${DOLLAR}' > $@
+
+.PHONY: all update_versions autotag

@@ -1,10 +1,10 @@
-FROM libyal/libcerror as libcerror
+FROM libyal/libcerror:20170824 as libcerror
 FROM libyal/builder:builder-debian-sid-1.2.0
-ENV LIB_VER latest
 
+WORKDIR /usr/local/src
 RUN git clone https://github.com/libyal/libcnotify.git
 WORKDIR /usr/local/src/libcnotify
-RUN /usr/local/src/checkout.sh ${LIB_VER}
+RUN git checkout 20170311
 COPY --from=libcerror /usr/local/src/libcerror/libcerror/ /usr/local/src/libcnotify/libcerror/
 ENV CONFIGURE_OPTIONS --prefix=/usr
 RUN ./autogen.sh

@@ -2,30 +2,35 @@
 
 for LIB in ${LOCAL_LIBS}
 do
-  echo 'FROM ${BASEREPO}/'${LIB}' as '${LIB%:*}
+  ARR=(${LIB/:/ })
+  LIB=${ARR[0]}
+  VER=${ARR[1]}
+  if [ "$VER" == '' ]
+  then
+    VER=${!LIB}
+  fi
+  echo 'FROM ${BASEREPO}/'${LIB}:${VER}' as '${LIB}
 done
+echo   'FROM ${BASEREPO}/builder:${BASETAG}'
+echo
 
-cat <<'EOF'
-FROM ${BASEREPO}/builder:${BASEIMAGE}
-ENV LIB_VER ${LIB_VER}
-
-RUN git clone https://github.com/libyal/${LIB_NAME}.git
-EOF
-
-for LIB in ${LN_LIBS}
+for LIB in ${LN_LIBS} ${LIB_NAME}
 do
-  LIB=${LIB%:*}
+  ARR=(${LIB/:/ })
+  LIB=${ARR[0]}
+  VER=${ARR[1]}
+  if [ "$VER" == '' ]
+  then
+    VER=${!LIB}
+  fi
+  echo "WORKDIR ${SRC_BASE}"
   echo "RUN git clone https://github.com/libyal/${LIB}.git"
+  echo "WORKDIR ${SRC_BASE}/${LIB}"
+  echo "RUN git checkout ${VER}"
 done
-
-cat <<'EOF'
-WORKDIR ${SRC_BASE}/${LIB_NAME}
-RUN ${SRC_BASE}/checkout.sh ${DOLLAR}{LIB_VER}
-EOF
 
 for LIB in ${LOCAL_LIBS}
 do
-  LIB=${LIB%:*}
   echo "COPY --from=${LIB} \${SRC_BASE}/${LIB}/${LIB}/ \${SRC_BASE}/\${LIB_NAME}/${LIB}/"
 done
 

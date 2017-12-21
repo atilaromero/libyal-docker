@@ -1,23 +1,23 @@
-FROM libyal/libbfio as libbfio
-FROM libyal/libcdata as libcdata
-FROM libyal/libcerror as libcerror
-FROM libyal/libcfile as libcfile
-FROM libyal/libclocale as libclocale
-FROM libyal/libcnotify as libcnotify
-FROM libyal/libcpath as libcpath
-FROM libyal/libcsplit as libcsplit
-FROM libyal/libcthreads as libcthreads
-FROM libyal/libfcache as libfcache
-FROM libyal/libfdata as libfdata
-FROM libyal/libfvalue as libfvalue
-FROM libyal/libhmac as libhmac
-FROM libyal/libuna as libuna
+FROM libyal/libbfio:20170123 as libbfio
+FROM libyal/libcdata:20170102 as libcdata
+FROM libyal/libcerror:20170824 as libcerror
+FROM libyal/libcfile:20170105 as libcfile
+FROM libyal/libclocale:20170105 as libclocale
+FROM libyal/libcnotify:20170311 as libcnotify
+FROM libyal/libcpath:20171210 as libcpath
+FROM libyal/libcsplit:20170311 as libcsplit
+FROM libyal/libcthreads:20170101 as libcthreads
+FROM libyal/libfcache:20170111 as libfcache
+FROM libyal/libfdata:20170112 as libfdata
+FROM libyal/libfvalue:20170113 as libfvalue
+FROM libyal/libhmac:20170117 as libhmac
+FROM libyal/libuna:20170825 as libuna
 FROM libyal/builder:builder-debian-sid-1.2.0
-ENV LIB_VER latest
 
+WORKDIR /usr/local/src
 RUN git clone https://github.com/libyal/libsmraw.git
 WORKDIR /usr/local/src/libsmraw
-RUN /usr/local/src/checkout.sh ${LIB_VER}
+RUN git checkout 20171105
 COPY --from=libbfio /usr/local/src/libbfio/libbfio/ /usr/local/src/libsmraw/libbfio/
 COPY --from=libcdata /usr/local/src/libcdata/libcdata/ /usr/local/src/libsmraw/libcdata/
 COPY --from=libcerror /usr/local/src/libcerror/libcerror/ /usr/local/src/libsmraw/libcerror/

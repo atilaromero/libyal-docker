@@ -1,14 +1,17 @@
-FROM libyal/libcdatetime as libcdatetime
-FROM libyal/libcerror as libcerror
-FROM libyal/libclocale as libclocale
-FROM libyal/libcnotify as libcnotify
+FROM libyal/libcdatetime:2485bb579b  as libcdatetime
+FROM libyal/libcerror:20170824 as libcerror
+FROM libyal/libclocale:20170105 as libclocale
+FROM libyal/libcnotify:20170311 as libcnotify
 FROM libyal/builder:builder-debian-sid-1.2.0
-ENV LIB_VER latest
 
-RUN git clone https://github.com/libyal/libuna.git
+WORKDIR /usr/local/src
 RUN git clone https://github.com/libyal/libcfile.git
+WORKDIR /usr/local/src/libcfile
+RUN git checkout 20170105
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libuna.git
 WORKDIR /usr/local/src/libuna
-RUN /usr/local/src/checkout.sh ${LIB_VER}
+RUN git checkout 20170825
 COPY --from=libcdatetime /usr/local/src/libcdatetime/libcdatetime/ /usr/local/src/libuna/libcdatetime/
 COPY --from=libcerror /usr/local/src/libcerror/libcerror/ /usr/local/src/libuna/libcerror/
 COPY --from=libclocale /usr/local/src/libclocale/libclocale/ /usr/local/src/libuna/libclocale/
