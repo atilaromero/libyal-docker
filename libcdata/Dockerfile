@@ -1,7 +1,7 @@
 FROM libyal/libcerror as libcerror
 FROM libyal/libcthreads as libcthreads
 FROM libyal/builder:builder-debian-sid-1.2.0
-ENV LIB_VER master
+ENV LIB_VER latest
 
 RUN git clone https://github.com/libyal/libcdata.git
 WORKDIR /usr/local/src/libcdata

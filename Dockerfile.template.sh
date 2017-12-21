@@ -2,11 +2,11 @@
 
 for LIB in ${LOCAL_LIBS}
 do
-  echo 'FROM libyal/'${LIB}' as '${LIB%:*}
+  echo 'FROM ${BASEREPO}/'${LIB}' as '${LIB%:*}
 done
 
 cat <<'EOF'
-FROM libyal/builder:${BASEIMAGE}
+FROM ${BASEREPO}/builder:${BASEIMAGE}
 ENV LIB_VER ${LIB_VER}
 
 RUN git clone https://github.com/libyal/${LIB_NAME}.git

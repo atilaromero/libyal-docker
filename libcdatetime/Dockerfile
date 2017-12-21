@@ -1,6 +1,6 @@
 FROM libyal/libcerror as libcerror
 FROM libyal/builder:builder-debian-sid-1.2.0
-ENV LIB_VER latest
+ENV LIB_VER master
 
 RUN git clone https://github.com/libyal/libcdatetime.git
 WORKDIR /usr/local/src/libcdatetime
