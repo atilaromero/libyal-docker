@@ -11,5 +11,4 @@ RUN apt-get update \
 && rm -rf /var/lib/apt/lists/*
 
 ENV SRC_BASE /usr/local/src/
-COPY checkout.sh ${SRC_BASE}
 WORKDIR ${SRC_BASE}
