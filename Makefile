@@ -65,7 +65,7 @@ autotag:
 
 
 %/Dockerfile: export LIB_NAME=$(@D)
-%/Dockerfile: Dockerfile.template.sh %/ Makefile
+%/Dockerfile: Dockerfile.template.sh %/ Makefile versions
 	./Dockerfile.template.sh |envsubst '$${BASEREPO} $${BASETAG} $${LIB_NAME} $${SRC_BASE} $${CONFIGURE_OPTIONS} $${DOLLAR}' > $@
 
 .PHONY: all update_versions autotag
