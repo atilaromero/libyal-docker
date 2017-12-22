@@ -1,19 +1,34 @@
-FROM libyal/libcdata:20170102 as libcdata
-FROM libyal/libcerror:20170824 as libcerror
-FROM libyal/libcnotify:20170311 as libcnotify
-FROM libyal/libcthreads:20170101 as libcthreads
-FROM libyal/libfcache:20170111 as libfcache
 FROM libyal/builder:builder-debian-sid-1.2.0
 
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libcdata.git
+WORKDIR /usr/local/src/libcdata
+RUN git checkout 20170102
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libcerror.git
+WORKDIR /usr/local/src/libcerror
+RUN git checkout 20170824
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libcnotify.git
+WORKDIR /usr/local/src/libcnotify
+RUN git checkout 20170311
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libcthreads.git
+WORKDIR /usr/local/src/libcthreads
+RUN git checkout 20170101
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libfcache.git
+WORKDIR /usr/local/src/libfcache
+RUN git checkout 20170111
 WORKDIR /usr/local/src
 RUN git clone https://github.com/libyal/libfdata.git
 WORKDIR /usr/local/src/libfdata
 RUN git checkout 20170112
-COPY --from=libcdata /usr/local/src/libcdata/libcdata/ /usr/local/src/libfdata/libcdata/
-COPY --from=libcerror /usr/local/src/libcerror/libcerror/ /usr/local/src/libfdata/libcerror/
-COPY --from=libcnotify /usr/local/src/libcnotify/libcnotify/ /usr/local/src/libfdata/libcnotify/
-COPY --from=libcthreads /usr/local/src/libcthreads/libcthreads/ /usr/local/src/libfdata/libcthreads/
-COPY --from=libfcache /usr/local/src/libfcache/libfcache/ /usr/local/src/libfdata/libfcache/
+RUN ln -s ../libcdata/libcdata/
+RUN ln -s ../libcerror/libcerror/
+RUN ln -s ../libcnotify/libcnotify/
+RUN ln -s ../libcthreads/libcthreads/
+RUN ln -s ../libfcache/libfcache/
 ENV CONFIGURE_OPTIONS --prefix=/usr
 RUN ./autogen.sh
 RUN ./configure ${CONFIGURE_OPTIONS}

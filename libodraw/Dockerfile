@@ -1,31 +1,64 @@
-FROM libyal/libbfio:20170123 as libbfio
-FROM libyal/libcdata:20170102 as libcdata
-FROM libyal/libcerror:20170824 as libcerror
-FROM libyal/libcfile:20170105 as libcfile
-FROM libyal/libclocale:20170105 as libclocale
-FROM libyal/libcnotify:20170311 as libcnotify
-FROM libyal/libcpath:20171210 as libcpath
-FROM libyal/libcsplit:20170311 as libcsplit
-FROM libyal/libcthreads:20170101 as libcthreads
-FROM libyal/libhmac:20170117 as libhmac
-FROM libyal/libuna:20170825 as libuna
 FROM libyal/builder:builder-debian-sid-1.2.0
 
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libbfio.git
+WORKDIR /usr/local/src/libbfio
+RUN git checkout 20170123
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libcdata.git
+WORKDIR /usr/local/src/libcdata
+RUN git checkout 20170102
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libcerror.git
+WORKDIR /usr/local/src/libcerror
+RUN git checkout 20170824
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libcfile.git
+WORKDIR /usr/local/src/libcfile
+RUN git checkout 20170105
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libclocale.git
+WORKDIR /usr/local/src/libclocale
+RUN git checkout 20170105
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libcnotify.git
+WORKDIR /usr/local/src/libcnotify
+RUN git checkout 20170311
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libcpath.git
+WORKDIR /usr/local/src/libcpath
+RUN git checkout 20171210
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libcsplit.git
+WORKDIR /usr/local/src/libcsplit
+RUN git checkout 20170311
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libcthreads.git
+WORKDIR /usr/local/src/libcthreads
+RUN git checkout 20170101
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libhmac.git
+WORKDIR /usr/local/src/libhmac
+RUN git checkout 20170117
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libuna.git
+WORKDIR /usr/local/src/libuna
+RUN git checkout 20170825
 WORKDIR /usr/local/src
 RUN git clone https://github.com/libyal/libodraw.git
 WORKDIR /usr/local/src/libodraw
 RUN git checkout 20171105
-COPY --from=libbfio /usr/local/src/libbfio/libbfio/ /usr/local/src/libodraw/libbfio/
-COPY --from=libcdata /usr/local/src/libcdata/libcdata/ /usr/local/src/libodraw/libcdata/
-COPY --from=libcerror /usr/local/src/libcerror/libcerror/ /usr/local/src/libodraw/libcerror/
-COPY --from=libcfile /usr/local/src/libcfile/libcfile/ /usr/local/src/libodraw/libcfile/
-COPY --from=libclocale /usr/local/src/libclocale/libclocale/ /usr/local/src/libodraw/libclocale/
-COPY --from=libcnotify /usr/local/src/libcnotify/libcnotify/ /usr/local/src/libodraw/libcnotify/
-COPY --from=libcpath /usr/local/src/libcpath/libcpath/ /usr/local/src/libodraw/libcpath/
-COPY --from=libcsplit /usr/local/src/libcsplit/libcsplit/ /usr/local/src/libodraw/libcsplit/
-COPY --from=libcthreads /usr/local/src/libcthreads/libcthreads/ /usr/local/src/libodraw/libcthreads/
-COPY --from=libhmac /usr/local/src/libhmac/libhmac/ /usr/local/src/libodraw/libhmac/
-COPY --from=libuna /usr/local/src/libuna/libuna/ /usr/local/src/libodraw/libuna/
+RUN ln -s ../libbfio/libbfio/
+RUN ln -s ../libcdata/libcdata/
+RUN ln -s ../libcerror/libcerror/
+RUN ln -s ../libcfile/libcfile/
+RUN ln -s ../libclocale/libclocale/
+RUN ln -s ../libcnotify/libcnotify/
+RUN ln -s ../libcpath/libcpath/
+RUN ln -s ../libcsplit/libcsplit/
+RUN ln -s ../libcthreads/libcthreads/
+RUN ln -s ../libhmac/libhmac/
+RUN ln -s ../libuna/libuna/
 ENV CONFIGURE_OPTIONS --prefix=/usr
 RUN ./autogen.sh
 RUN ./configure ${CONFIGURE_OPTIONS}

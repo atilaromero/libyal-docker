@@ -22,29 +22,30 @@ $(SUBDIRS:%=%/hooks/push): push
 	mkdir -p $(dir $@)
 	cp push $(dir $@)
 
-libcerror/Dockerfile:    export LOCAL_LIBS=
-libcaes/Dockerfile:      export LOCAL_LIBS=libcerror
-libcdatetime/Dockerfile: export LOCAL_LIBS=libcerror
-libclocale/Dockerfile:   export LOCAL_LIBS=libcerror
-libcnotify/Dockerfile:   export LOCAL_LIBS=libcerror
-libcsplit/Dockerfile:    export LOCAL_LIBS=libcerror
-libcthreads/Dockerfile:  export LOCAL_LIBS=libcerror
-libfguid/Dockerfile:     export LOCAL_LIBS=libcerror
-libcdata/Dockerfile:     export LOCAL_LIBS=libcerror libcthreads
-libuna/Dockerfile:       export LOCAL_LIBS=libcdatetime libcerror libclocale libcnotify
-libuna/Dockerfile:       export LN_LIBS=libcfile
-libcfile/Dockerfile:     export LOCAL_LIBS=libcerror libclocale libcnotify libuna
-libcpath/Dockerfile:     export LOCAL_LIBS=libcerror libclocale libcsplit libuna
-libbfio/Dockerfile:      export LOCAL_LIBS=libcdata libcerror libcfile libclocale libcnotify libcpath libcsplit libcthreads libuna
-libfcache/Dockerfile:    export LOCAL_LIBS=libcdata libcerror libcthreads
-libfdata/Dockerfile:     export LOCAL_LIBS=libcdata libcerror libcnotify libcthreads libfcache
-libfwnt/Dockerfile:      export LOCAL_LIBS=libcdata libcerror libcnotify libcthreads
-libfvalue/Dockerfile:    export LOCAL_LIBS=libcdata libcerror libcnotify libcthreads libfdatetime libfguid libfwnt libuna
-libhmac/Dockerfile:      export LOCAL_LIBS=libcerror libcfile libclocale libcnotify libcpath libcsplit libuna
-libodraw/Dockerfile:     export LOCAL_LIBS=libbfio libcdata libcerror libcfile libclocale libcnotify libcpath libcsplit libcthreads libhmac libuna
-libsmdev/Dockerfile:     export LOCAL_LIBS=libcdata libcerror libcfile libclocale libcnotify libcthreads libuna
-libsmraw/Dockerfile:     export LOCAL_LIBS=libbfio libcdata libcerror libcfile libclocale libcnotify libcpath libcsplit libcthreads libfcache libfdata libfvalue libhmac libuna
-libewf/Dockerfile:       export LOCAL_LIBS=libbfio libcaes libcdata libcdatetime libcerror libcfile libclocale libcnotify libcpath libcsplit libcthreads libfcache libfdata libfguid libfvalue libhmac libodraw libsmdev libsmraw libuna
+#LN_LIBS uses checkout + ln
+#LOCAL_LIBS uses docker COPY
+libcerror/Dockerfile:    export LN_LIBS=
+libcaes/Dockerfile:      export LN_LIBS=libcerror
+libcdatetime/Dockerfile: export LN_LIBS=libcerror
+libclocale/Dockerfile:   export LN_LIBS=libcerror
+libcnotify/Dockerfile:   export LN_LIBS=libcerror
+libcsplit/Dockerfile:    export LN_LIBS=libcerror
+libcthreads/Dockerfile:  export LN_LIBS=libcerror
+libfguid/Dockerfile:     export LN_LIBS=libcerror
+libcdata/Dockerfile:     export LN_LIBS=libcerror libcthreads
+libuna/Dockerfile:       export LN_LIBS=libcdatetime libcerror libclocale libcnotify:master libcfile
+libcfile/Dockerfile:     export LN_LIBS=libcerror libclocale libcnotify libuna
+libcpath/Dockerfile:     export LN_LIBS=libcerror libclocale libcsplit libuna
+libbfio/Dockerfile:      export LN_LIBS=libcdata libcerror libcfile libclocale libcnotify libcpath libcsplit libcthreads libuna
+libfcache/Dockerfile:    export LN_LIBS=libcdata libcerror libcthreads
+libfdata/Dockerfile:     export LN_LIBS=libcdata libcerror libcnotify libcthreads libfcache
+libfwnt/Dockerfile:      export LN_LIBS=libcdata libcerror libcnotify libcthreads
+libfvalue/Dockerfile:    export LN_LIBS=libcdata libcerror libcnotify libcthreads libfdatetime libfguid libfwnt libuna
+libhmac/Dockerfile:      export LN_LIBS=libcerror libcfile libclocale libcnotify libcpath libcsplit libuna
+libodraw/Dockerfile:     export LN_LIBS=libbfio libcdata libcerror libcfile libclocale libcnotify libcpath libcsplit libcthreads libhmac libuna
+libsmdev/Dockerfile:     export LN_LIBS=libcdata libcerror libcfile libclocale libcnotify libcthreads libuna
+libsmraw/Dockerfile:     export LN_LIBS=libbfio libcdata libcerror libcfile libclocale libcnotify libcpath libcsplit libcthreads libfcache libfdata libfvalue libhmac libuna
+libewf/Dockerfile:       export LN_LIBS=libbfio libcaes libcdata libcdatetime libcerror libcfile libclocale libcnotify libcpath libcsplit libcthreads libfcache libfdata libfguid libfvalue libhmac libodraw libsmdev libsmraw libuna
 
 update_versions:
 	(for x in ${SUBDIRS}; \

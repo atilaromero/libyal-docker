@@ -1,23 +1,44 @@
-FROM libyal/libcdata:20170102 as libcdata
-FROM libyal/libcerror:20170824 as libcerror
-FROM libyal/libcfile:20170105 as libcfile
-FROM libyal/libclocale:20170105 as libclocale
-FROM libyal/libcnotify:20170311 as libcnotify
-FROM libyal/libcthreads:20170101 as libcthreads
-FROM libyal/libuna:20170825 as libuna
 FROM libyal/builder:builder-debian-sid-1.2.0
 
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libcdata.git
+WORKDIR /usr/local/src/libcdata
+RUN git checkout 20170102
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libcerror.git
+WORKDIR /usr/local/src/libcerror
+RUN git checkout 20170824
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libcfile.git
+WORKDIR /usr/local/src/libcfile
+RUN git checkout 20170105
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libclocale.git
+WORKDIR /usr/local/src/libclocale
+RUN git checkout 20170105
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libcnotify.git
+WORKDIR /usr/local/src/libcnotify
+RUN git checkout 20170311
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libcthreads.git
+WORKDIR /usr/local/src/libcthreads
+RUN git checkout 20170101
+WORKDIR /usr/local/src
+RUN git clone https://github.com/libyal/libuna.git
+WORKDIR /usr/local/src/libuna
+RUN git checkout 20170825
 WORKDIR /usr/local/src
 RUN git clone https://github.com/libyal/libsmdev.git
 WORKDIR /usr/local/src/libsmdev
 RUN git checkout 20171112
-COPY --from=libcdata /usr/local/src/libcdata/libcdata/ /usr/local/src/libsmdev/libcdata/
-COPY --from=libcerror /usr/local/src/libcerror/libcerror/ /usr/local/src/libsmdev/libcerror/
-COPY --from=libcfile /usr/local/src/libcfile/libcfile/ /usr/local/src/libsmdev/libcfile/
-COPY --from=libclocale /usr/local/src/libclocale/libclocale/ /usr/local/src/libsmdev/libclocale/
-COPY --from=libcnotify /usr/local/src/libcnotify/libcnotify/ /usr/local/src/libsmdev/libcnotify/
-COPY --from=libcthreads /usr/local/src/libcthreads/libcthreads/ /usr/local/src/libsmdev/libcthreads/
-COPY --from=libuna /usr/local/src/libuna/libuna/ /usr/local/src/libsmdev/libuna/
+RUN ln -s ../libcdata/libcdata/
+RUN ln -s ../libcerror/libcerror/
+RUN ln -s ../libcfile/libcfile/
+RUN ln -s ../libclocale/libclocale/
+RUN ln -s ../libcnotify/libcnotify/
+RUN ln -s ../libcthreads/libcthreads/
+RUN ln -s ../libuna/libuna/
 ENV CONFIGURE_OPTIONS --prefix=/usr
 RUN ./autogen.sh
 RUN ./configure ${CONFIGURE_OPTIONS}
