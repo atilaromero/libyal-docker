@@ -1,13 +1,14 @@
-export BASEREPO ?= libyal
+export BASEREPO ?= atilaromero/libyal
 export BASETAG ?= builder-debian-sid-1.2.0
 export SRC_BASE ?= /usr/local/src
 export CONFIGURE_OPTIONS ?= --prefix=/usr
 export DOLLAR := $$
+SHELL := /bin/bash
 
 SUBDIRS := libcerror libclocale libbfio libcaes libcdata libcdatetime
 SUBDIRS += libcfile libcnotify libcpath libcsplit libcthreads libfcache
 SUBDIRS += libfdata libfguid libfvalue libhmac libodraw libsmdev libsmraw
-SUBDIRS += libuna libfwnt
+SUBDIRS += libuna libfwnt libewf
 
 all: $(SUBDIRS:%=%/Dockerfile)
 
@@ -58,7 +59,7 @@ update_versions:
 include versions
 export libcdatetime := 2485bb579b #20171209
 
-autotag:
+tag:
 	for x in ${SUBDIRS}; \
 	do \
 		git tag -f $${x}-$${!x}; \
@@ -69,4 +70,4 @@ autotag:
 %/Dockerfile: Dockerfile.template.sh %/ Makefile versions
 	./Dockerfile.template.sh |envsubst '$${BASEREPO} $${BASETAG} $${LIB_NAME} $${SRC_BASE} $${CONFIGURE_OPTIONS} $${DOLLAR}' > $@
 
-.PHONY: all update_versions autotag
+.PHONY: all update_versions tag

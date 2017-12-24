@@ -1,4 +1,4 @@
-FROM libyal/builder:builder-debian-sid-1.2.0
+FROM atilaromero/libyal:builder-debian-sid-1.2.0
 
 WORKDIR /usr/local/src
 RUN git clone https://github.com/libyal/libbfio.git

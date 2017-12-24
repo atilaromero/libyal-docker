@@ -9,9 +9,9 @@ do
   then
     VER=${!LIB}
   fi
-  echo 'FROM ${BASEREPO}/'${LIB}:${VER}' as '${LIB}
+  echo 'FROM ${BASEREPO}:'${LIB}-${VER}' as '${LIB}
 done
-echo   'FROM ${BASEREPO}/builder:${BASETAG}'
+echo   'FROM ${BASEREPO}:${BASETAG}'
 echo
 
 for LIB in ${LN_LIBS} ${LIB_NAME}
