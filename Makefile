@@ -1,5 +1,5 @@
 export BASEREPO ?= atilaromero/libyal
-export BASETAG ?= builder-debian-sid-1.2.0
+export BASETAG ?= builder-debian-sid-1.3.0
 export SRC_BASE ?= /usr/local/src
 export CONFIGURE_OPTIONS ?= --prefix=/usr
 export DOLLAR := $$
