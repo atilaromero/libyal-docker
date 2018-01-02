@@ -5,7 +5,7 @@ RUN apt-get update \
   git bison flex \
   autoconf automake autopoint libtool pkg-config \
   build-essential debhelper fakeroot autotools-dev \
-  zlib1g-dev libbz2-dev libssl-dev libfuse-dev \
+  zlib1g-dev libbz2-dev libssl-dev libfuse-dev uuid-dev \
   python-all-dev python3-all-dev \
 && apt-get clean  \
 && rm -rf /var/lib/apt/lists/*
