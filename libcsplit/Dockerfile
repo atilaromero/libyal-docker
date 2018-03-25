@@ -1,12 +1,12 @@
-FROM atilaromero/libyal:builder-debian-sid-1.3.0
+FROM atilaromero/libyal:builder-debian-sid-1.3.1
 
 WORKDIR /usr/local/src
 RUN git clone https://github.com/libyal/libcsplit.git
 WORKDIR /usr/local/src/libcsplit
-RUN git checkout 20170311
-ENV CONFIGURE_OPTIONS --prefix=/usr
+RUN git checkout 
 RUN ./synclibs.sh
 RUN ./autogen.sh
+ENV CONFIGURE_OPTIONS --prefix=/usr --enable-static-executables=yes --enable-python
 RUN ./configure ${CONFIGURE_OPTIONS}
 RUN make install
 RUN ldconfig

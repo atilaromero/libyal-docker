@@ -1,7 +1,7 @@
 FROM debian:sid
 
-RUN apt-get update \
-  && apt-get install -y --force-yes \
+RUN apt-get update 
+RUN apt-get install -y --force-yes \
   git bison flex \
   autoconf automake autopoint libtool pkg-config \
   build-essential debhelper fakeroot autotools-dev \

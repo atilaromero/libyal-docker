@@ -53,8 +53,6 @@ then
   done
 fi
 
-echo 'ENV CONFIGURE_OPTIONS ${CONFIGURE_OPTIONS}'
-
 if [ $USE_SYNC == true ]
 then
   echo 'RUN ./synclibs.sh'
@@ -62,6 +60,7 @@ fi
 
 cat <<'EOF'
 RUN ./autogen.sh
+ENV CONFIGURE_OPTIONS ${CONFIGURE_OPTIONS}
 RUN ./configure ${DOLLAR}{CONFIGURE_OPTIONS}
 RUN make install
 RUN ldconfig

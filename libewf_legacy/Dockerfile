@@ -1,9 +1,9 @@
 FROM atilaromero/libyal:builder-debian-sid-1.3.1
 
 WORKDIR /usr/local/src
-RUN git clone https://github.com/libyal/libcerror.git
-WORKDIR /usr/local/src/libcerror
-RUN git checkout 20170824
+RUN git clone https://github.com/libyal/libewf_legacy.git
+WORKDIR /usr/local/src/libewf_legacy
+RUN git checkout 20140802
 RUN ./synclibs.sh
 RUN ./autogen.sh
 ENV CONFIGURE_OPTIONS --prefix=/usr --enable-static-executables=yes --enable-python
