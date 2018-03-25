@@ -3,7 +3,7 @@ FROM atilaromero/libyal:builder-debian-sid-1.3.1
 WORKDIR /usr/local/src
 RUN git clone https://github.com/libyal/libpff.git
 WORKDIR /usr/local/src/libpff
-RUN git checkout 56cdadaeb5c3df1e5be9e26896537a0dead5c32f 
+RUN git checkout 45978e56aedfa1a6a352e8992f0db26bbaaab381 
 RUN ./synclibs.sh
 RUN ./autogen.sh
 ENV CONFIGURE_OPTIONS --prefix=/usr --enable-static-executables=yes --enable-python

@@ -21,4 +21,4 @@ export libuna=20170825
 export libfwnt=20170115
 export libewf=20171104
 export libewf_legacy=20140802
-export libpff=56cdadaeb5c3df1e5be9e26896537a0dead5c32f #20161215
+export libpff=45978e56aedfa1a6a352e8992f0db26bbaaab381 #20180205
